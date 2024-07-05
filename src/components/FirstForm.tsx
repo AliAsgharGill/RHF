@@ -25,6 +25,7 @@ const FirstForm = () => {
       <div className="flex flex-col justify-center items-center p-4  space-x-4 space-y-4">
         <h1 className="text-black font-bold ">Form ({renderCount / 2})</h1>
         <form
+          noValidate
           onSubmit={handleSubmit(onSubmit)}
           className=" bg-white shadow-md p-4 rounded "
         >
@@ -34,7 +35,12 @@ const FirstForm = () => {
               type="text"
               id="name"
               className="border border-black rounded"
-              {...register("username")}
+              {...register("username", {
+                required: {
+                  value: true,
+                  message: "Username Required",
+                },
+              })}
             />
           </div>
           <div className="flex justify-start  text-start flex-col">
@@ -43,7 +49,12 @@ const FirstForm = () => {
               type="email"
               id="email"
               className="border border-black rounded"
-              {...register("email")}
+              {...register("email", {
+                pattern: {
+                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  message: "Invalid email format",
+                },
+              })}
             />
           </div>
           <div className="flex justify-start  text-start flex-col">
@@ -52,7 +63,7 @@ const FirstForm = () => {
               type="text"
               id="channel"
               className="border border-black rounded"
-              {...register("channel")}
+              {...register("channel", { required: "Channel Name Required" })}
             />
           </div>
 
