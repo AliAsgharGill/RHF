@@ -1,9 +1,9 @@
 import { useForm } from "react-hook-form";
-
+import { DevTool } from "@hookform/devtools";
 const FirstForm = () => {
   const form = useForm();
 
-  const { register } = form;
+  const { register, control } = form;
 
   return (
     <>
@@ -19,6 +19,7 @@ const FirstForm = () => {
 
         <button type="submit">Submit</button>
       </form>
+      <DevTool control={control} />
     </>
   );
 };
