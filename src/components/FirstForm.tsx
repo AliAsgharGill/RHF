@@ -11,7 +11,29 @@ type FormValues = {
 };
 
 const FirstForm = () => {
-  const form = useForm<FormValues>();
+  // we can give default values inside useForm Hook using key defaultValues, and default values will be shown if we give.
+  //   we can also load previously saved as default values but need to make defaultVales function asynchronous
+  const form = useForm<FormValues>({
+    // static default values
+    // defaultValues: {
+    //   username: "",
+    //   email: "",
+    //   channel: "",
+    // },
+
+    // default values from previous state or from api
+    defaultValues: async () => {
+      const response = await fetch(
+        "https://jsonplaceholder.typicode.com/users/1"
+      );
+      const data = await response.json();
+      return {
+        username: data.username,
+        email: data.email,
+        channel: data.website,
+      };
+    },
+  });
 
   const { register, control, handleSubmit, formState } = form;
   const { errors } = formState;
@@ -26,7 +48,7 @@ const FirstForm = () => {
         <h1 className="text-black font-bold ">Form ({renderCount / 2})</h1>
         <form
           noValidate
-        //   to submit the form we use handleSubmit method assigned to the onSubmit event and passed in our submit function
+          //   to submit the form we use handleSubmit method assigned to the onSubmit event and passed in our submit function
           onSubmit={handleSubmit(onSubmit)}
           className=" bg-white shadow-md p-4 rounded "
         >
@@ -35,10 +57,11 @@ const FirstForm = () => {
             <input
               type="text"
               id="name"
-              className="border border-black rounded"
-            // to register a field with RHF need to use ...register() method, it automatically track the field state
+              placeholder="MrBeast"
+              className="border border-black rounded p-2"
+              // to register a field with RHF need to use ...register() method, it automatically track the field state
 
-            // and for validation we can pass options to the register function
+              // and for validation we can pass options to the register function
 
               {...register("username", {
                 required: {
@@ -56,7 +79,8 @@ const FirstForm = () => {
             <input
               type="email"
               id="email"
-              className="border border-black rounded"
+              placeholder="mrbeast@feastables.com"
+              className="border border-black rounded p-2"
               {...register("email", {
                 pattern: {
                   value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
@@ -90,7 +114,8 @@ const FirstForm = () => {
             <input
               type="text"
               id="channel"
-              className="border border-black rounded"
+              placeholder="MrBeast"
+              className="border border-black rounded p-2"
               {...register("channel", { required: "Channel Name Required" })}
             />
             <p className="my-1 text-sm text-red-500">
