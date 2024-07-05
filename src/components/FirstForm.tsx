@@ -13,8 +13,8 @@ type FormValues = {
 const FirstForm = () => {
   const form = useForm<FormValues>();
 
-  const { register, control, handleSubmit } = form;
-
+  const { register, control, handleSubmit, formState } = form;
+  const { errors } = formState;
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted:", data);
   };
@@ -42,6 +42,9 @@ const FirstForm = () => {
                 },
               })}
             />
+            <p className="my-1 text-sm text-red-500">
+              {errors.username?.message}
+            </p>
           </div>
           <div className="flex justify-start  text-start flex-col">
             <label htmlFor="email">Email</label>
@@ -51,11 +54,12 @@ const FirstForm = () => {
               className="border border-black rounded"
               {...register("email", {
                 pattern: {
-                  value: /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$/i,
+                  value: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
                   message: "Invalid email format",
                 },
               })}
             />
+            <p className="my-1 text-sm text-red-500">{errors.email?.message}</p>
           </div>
           <div className="flex justify-start  text-start flex-col">
             <label htmlFor="">Channel</label>
@@ -65,6 +69,9 @@ const FirstForm = () => {
               className="border border-black rounded"
               {...register("channel", { required: "Channel Name Required" })}
             />
+            <p className="my-1 text-sm text-red-500">
+              {errors.channel?.message}
+            </p>
           </div>
 
           <button
