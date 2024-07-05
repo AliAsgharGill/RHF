@@ -4,17 +4,30 @@ import { DevTool } from "@hookform/devtools";
 // here we create a variable, it will be updated on render
 let renderCount = 0;
 
-const FirstForm = () => {
-  const form = useForm();
+type FormValues = {
+  username: string;
+  email: string;
+  channel: string;
+};
 
-  const { register, control } = form;
+const FirstForm = () => {
+  const form = useForm<FormValues>();
+
+  const { register, control, handleSubmit } = form;
+
+  const onSubmit = (data: FormValues) => {
+    console.log("Form submitted:", data);
+  };
 
   renderCount += 1;
   return (
     <>
       <div className="flex flex-col justify-center items-center p-4  space-x-4 space-y-4">
         <h1 className="text-black font-bold ">Form ({renderCount / 2})</h1>
-        <form className=" bg-white shadow-md p-4 rounded ">
+        <form
+          onSubmit={handleSubmit(onSubmit)}
+          className=" bg-white shadow-md p-4 rounded "
+        >
           <div className="flex justify-start  text-start flex-col">
             <label htmlFor="name">Username</label>
             <input
