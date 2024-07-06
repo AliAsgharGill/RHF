@@ -12,6 +12,7 @@ type FormValues = {
     twitter: string;
     facebook: string;
   };
+  phoneNumbers: string[];
 };
 
 const FirstForm = () => {
@@ -29,6 +30,7 @@ const FirstForm = () => {
         twitter: "",
         facebook: "",
       },
+      phoneNumbers: ["", ""],
     },
 
     // default values from previous state or from api
@@ -146,7 +148,9 @@ const FirstForm = () => {
                 required: "Twitter Username Required",
               })}
             />
-            <p className=" text-sm text-red-500">{errors.social?.twitter?.message}</p>
+            <p className=" text-sm text-red-500">
+              {errors.social?.twitter?.message}
+            </p>
           </div>
 
           {/* facebook handle  */}
@@ -161,9 +165,44 @@ const FirstForm = () => {
                 required: "Facebook Username Required",
               })}
             />
-            <p className=" text-sm text-red-500">{errors.social?.facebook?.message}</p>
+            <p className=" text-sm text-red-500">
+              {errors.social?.facebook?.message}
+            </p>
           </div>
 
+          {/* primary phone number */}
+          <div className="flex justify-start  text-start flex-col">
+            <label htmlFor="">Primary Phone Number</label>
+            <input
+              type="text"
+              id="primary-phone-number"
+              placeholder="+929384023242"
+              className="border border-black rounded p-2"
+              {...register("phoneNumbers.0", {
+                required: "Primary Phone Number Required",
+              })}
+            />
+            <p className=" text-sm text-red-500">
+              {errors.phoneNumbers?.[0]?.message}
+            </p>
+          </div>
+
+          {/* secondary phone number */}
+          <div className="flex justify-start  text-start flex-col">
+            <label htmlFor="">Secondary Phone Number</label>
+            <input
+              type="text"
+              id="secondary-phone-number"
+              placeholder="062850435"
+              className="border border-black rounded p-2"
+              {...register("phoneNumbers.1", {
+                required: "Secondary Phone Number Required",
+              })}
+            />
+            <p className=" text-sm text-red-500">
+              {errors.phoneNumbers?.[1]?.message}
+            </p>
+          </div>
           {/* Button  */}
           <button
             type="submit"
