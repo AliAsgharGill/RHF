@@ -8,31 +8,42 @@ type FormValues = {
   username: string;
   email: string;
   channel: string;
+  social: {
+    twitter: string;
+    facebook: string;
+  };
 };
 
 const FirstForm = () => {
   // we can give default values inside useForm Hook using key defaultValues, and default values will be shown if we give.
+
   //   we can also load previously saved as default values but need to make defaultVales function asynchronous
   const form = useForm<FormValues>({
     // static default values
-    // defaultValues: {
-    //   username: "",
-    //   email: "",
-    //   channel: "",
-    // },
+
+    defaultValues: {
+      username: "",
+      email: "",
+      channel: "",
+      social: {
+        twitter: "",
+        facebook: "",
+      },
+    },
 
     // default values from previous state or from api
-    defaultValues: async () => {
-      const response = await fetch(
-        "https://jsonplaceholder.typicode.com/users/1"
-      );
-      const data = await response.json();
-      return {
-        username: data.username,
-        email: data.email,
-        channel: data.website,
-      };
-    },
+
+    //   defaultValues: async () => {
+    //     const response = await fetch(
+    //       "https://jsonplaceholder.typicode.com/users/1"
+    //     );
+    //     const data = await response.json();
+    //     return {
+    //       username: data.username,
+    //       email: data.email,
+    //       channel: data.website,
+    //     };
+    //   },
   });
 
   const { register, control, handleSubmit, formState } = form;
@@ -50,8 +61,9 @@ const FirstForm = () => {
           noValidate
           //   to submit the form we use handleSubmit method assigned to the onSubmit event and passed in our submit function
           onSubmit={handleSubmit(onSubmit)}
-          className=" bg-white shadow-md p-4 rounded "
+          className=" bg-white w-1/3 shadow-md p-4 rounded "
         >
+          {/* username  */}
           <div className="flex justify-start  text-start flex-col">
             <label htmlFor="name">Username</label>
             <input
@@ -70,10 +82,9 @@ const FirstForm = () => {
                 },
               })}
             />
-            <p className="my-1 text-sm text-red-500">
-              {errors.username?.message}
-            </p>
+            <p className=" text-sm text-red-500">{errors.username?.message}</p>
           </div>
+          {/* email */}
           <div className="flex justify-start  text-start flex-col">
             <label htmlFor="email">Email</label>
             <input
@@ -107,8 +118,10 @@ const FirstForm = () => {
               })}
             />
             {/* In any error case of current field error message will shown becuase we get errors from formState */}
-            <p className="my-1 text-sm text-red-500">{errors.email?.message}</p>
+            <p className=" text-sm text-red-500">{errors.email?.message}</p>
           </div>
+
+          {/* channel name */}
           <div className="flex justify-start  text-start flex-col">
             <label htmlFor="">Channel</label>
             <input
@@ -118,14 +131,43 @@ const FirstForm = () => {
               className="border border-black rounded p-2"
               {...register("channel", { required: "Channel Name Required" })}
             />
-            <p className="my-1 text-sm text-red-500">
-              {errors.channel?.message}
-            </p>
+            <p className=" text-sm text-red-500">{errors.channel?.message}</p>
           </div>
 
+          {/* twitter handle */}
+          <div className="flex justify-start  text-start flex-col">
+            <label htmlFor="">Twitter</label>
+            <input
+              type="text"
+              id="twitter"
+              placeholder="@MrBeast"
+              className="border border-black rounded p-2"
+              {...register("social.twitter", {
+                required: "Twitter Username Required",
+              })}
+            />
+            <p className=" text-sm text-red-500">{errors.social?.twitter?.message}</p>
+          </div>
+
+          {/* facebook handle  */}
+          <div className="flex justify-start  text-start flex-col">
+            <label htmlFor="">Facebook</label>
+            <input
+              type="text"
+              id="facebook"
+              placeholder="@MrBeast"
+              className="border border-black rounded p-2"
+              {...register("social.facebook", {
+                required: "Facebook Username Required",
+              })}
+            />
+            <p className=" text-sm text-red-500">{errors.social?.facebook?.message}</p>
+          </div>
+
+          {/* Button  */}
           <button
             type="submit"
-            className="border bg-black font-bold text-white w-full my-2 rounded"
+            className="border bg-black font-bold text-white w-full my-2 p-2 rounded"
           >
             Submit
           </button>
