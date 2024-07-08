@@ -55,7 +55,7 @@ const FirstForm = () => {
     //   },
   });
 
-  const { register, control, handleSubmit, formState, watch } = form;
+  const { register, control, handleSubmit, formState, watch, getValues } = form;
   const { errors } = formState;
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted:", data);
@@ -85,6 +85,10 @@ const FirstForm = () => {
   // why we used useEffect to render form on every change?
   // because we have used watch method to get the value of the input and store it in a variable formValues and it will render form on every change so we need to use useEffect to render form on every change and it will render form on every change.
 
+  // here we are using getValues method from form, it will show values on click of the Get values button, we can a single property, multiple properties by defining in an array or whole form values without specifying a field name
+  const handleGetValues = () => {
+    console.log("Get Values:", getValues("social"));
+  };
   renderCount += 1;
   return (
     <>
@@ -328,6 +332,14 @@ const FirstForm = () => {
             className="border bg-black font-bold text-white w-full my-2 p-2 rounded"
           >
             Submit
+          </button>
+          {/* Get values button */}
+          <button
+            type="button"
+            onClick={handleGetValues}
+            className="border bg-black font-bold text-white w-full my-2 p-2 rounded"
+          >
+            Get Values
           </button>
         </form>
         <DevTool control={control} />
