@@ -66,8 +66,14 @@ const FirstForm = () => {
   } = form;
   //  here we will get errors from formState and get shome info from formState, like errors, touchedFields and dirtyFields, we can use this info to show errors on screen
   const { errors, touchedFields, dirtyFields, isDirty } = formState;
-  console.log("Touched Fields:", touchedFields, "Dirty Fields:", dirtyFields, "IsDirty:", isDirty);
-  
+  console.log(
+    "Touched Fields:",
+    touchedFields,
+    "Dirty Fields:",
+    dirtyFields,
+    "IsDirty:",
+    isDirty
+  );
 
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted:", data);
@@ -215,6 +221,9 @@ const FirstForm = () => {
           </div>
 
           {/* twitter handle */}
+          {/* we can use disabled from register method, if filed is disbaled it validation also get disabled and in ouptut its value will be undefined */}
+          {/* here we will also disable this filed conditionally if it above filed  channel is not filled we can check it and make field disabled with any condition, */}
+          {/* We can also set disable without any condition */}
           <div className="flex justify-start  text-start flex-col">
             <label htmlFor="">Twitter</label>
             <input
@@ -223,6 +232,10 @@ const FirstForm = () => {
               placeholder="@MrBeast"
               className="border border-black rounded p-2"
               {...register("social.twitter", {
+                // simple disabled
+                // disabled:true,
+                // conditional disabled
+                disabled: watch("channel") === "",
                 required: "Twitter Username Required",
               })}
             />
