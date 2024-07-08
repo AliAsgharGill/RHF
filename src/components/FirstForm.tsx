@@ -55,7 +55,15 @@ const FirstForm = () => {
     //   },
   });
 
-  const { register, control, handleSubmit, formState, watch, getValues } = form;
+  const {
+    register,
+    control,
+    handleSubmit,
+    formState,
+    watch,
+    getValues,
+    setValue,
+  } = form;
   const { errors } = formState;
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted:", data);
@@ -89,6 +97,24 @@ const FirstForm = () => {
   const handleGetValues = () => {
     console.log("Get Values:", getValues("social"));
   };
+
+  // here we will use setValues method
+
+  const handleSetValues = () => {
+    // these both methods are used to set predefined values in the form
+    // we can also check for validation, dirty and touch.
+    setValue("username", "Sated Value ALI", {
+      shouldDirty: true,
+      shouldValidate: true,
+      shouldTouch: true,
+    });
+    setValue("channel", "Sated Value Channel StylinAliVlogs", {
+      shouldDirty: true,
+      shouldValidate: true,
+      shouldTouch: true,
+    });
+  };
+
   renderCount += 1;
   return (
     <>
@@ -101,7 +127,7 @@ const FirstForm = () => {
         <h2 className="bg-white">Watching username Value: {watchUserName}</h2>
         {/* Watching only username and email values */}
         <h2 className="bg-white">
-          Username and Email: {watchUserNameAndEmail}
+          Watching Username and Email: {watchUserNameAndEmail}
         </h2>
         {/* Watching Form Values */}
         <h2 className="bg-white">
@@ -340,6 +366,14 @@ const FirstForm = () => {
             className="border bg-black font-bold text-white w-full my-2 p-2 rounded"
           >
             Get Values
+          </button>
+          {/* Set values button */}
+          <button
+            type="button"
+            onClick={handleSetValues}
+            className="border bg-black font-bold text-white w-full my-2 p-2 rounded"
+          >
+            Set Values
           </button>
         </form>
         <DevTool control={control} />
