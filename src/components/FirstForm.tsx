@@ -70,15 +70,33 @@ const FirstForm = () => {
     setValue,
   } = form;
   //  here we will get errors from formState and get shome info from formState, like errors, touchedFields and dirtyFields, we can use this info to show errors on screen
-  const { errors, touchedFields, dirtyFields, isDirty, isValid } = formState;
-  // console.log(
-  //   "Touched Fields:",
-  //   touchedFields,
-  //   "Dirty Fields:",
-  //   dirtyFields,
-  //   "IsDirty:",
-  //   isDirty
-  // );
+  const {
+    errors,
+    touchedFields,
+    dirtyFields,
+    isDirty,
+    isValid,
+    isSubmitting,
+    isSubmitted,
+    isSubmitSuccessful,
+    submitCount,
+  } = formState;
+  console.log(
+    //   "Touched Fields:",
+    //   touchedFields,
+    //   "Dirty Fields:",
+    //   dirtyFields,
+    //   "IsDirty:",
+    //   isDirty
+    "Is Submitting ",
+    { isSubmitting },
+    "Is Submitted ",
+    { isSubmitted },
+    "Is Submit Successful ",
+    { isSubmitSuccessful },
+    "Submit Count ",
+    { submitCount }
+  );
 
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted:", data);
@@ -107,7 +125,7 @@ const FirstForm = () => {
       console.log(value);
     });
     return () => subscription.unsubscribe();
-  }, [watch]);
+  }, [watch, isSubmitSuccessful]);
 
   // why we used useEffect to render form on every change?
   // because we have used watch method to get the value of the input and store it in a variable formValues and it will render form on every change so we need to use useEffect to render form on every change and it will render form on every change.
@@ -214,7 +232,7 @@ const FirstForm = () => {
                 },
               })}
             />
-            {/* In any error case of current field error message will shown becuase we get errors from formState */}
+            {/* In any error case of current field error message will shown because we get errors from formState */}
             <p className=" text-sm text-red-500">{errors.email?.message}</p>
           </div>
 
@@ -380,11 +398,11 @@ const FirstForm = () => {
             <p className=" text-sm text-red-500">{errors.dob?.message}</p>
           </div>
 
-          {/* Here we make it disbaled on the basis of isDirty and isValid values, and we get these values form formState */}
+          {/* Here we make it disabled on the basis of isDirty and isValid values, and we get these values form formState */}
           {/* Submission Button  */}
           <button
             type="submit"
-            disabled={!isDirty || !isValid}
+            disabled={!isDirty || !isValid || !isDirty || !isValid}
             className={`border ${
               isValid ? "bg-black" : "bg-gray-300"
             } font-bold text-white w-full my-2 p-2 rounded`}
