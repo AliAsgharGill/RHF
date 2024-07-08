@@ -75,6 +75,7 @@ const FirstForm = () => {
     getValues,
     setValue,
     reset,
+    trigger,
   } = form;
   //  here we will get errors from formState and get shome info from formState, like errors, touchedFields and dirtyFields, we can use this info to show errors on screen
   const {
@@ -460,6 +461,20 @@ const FirstForm = () => {
           >
             Set Values
           </button>
+
+          {/* Manual Validate button */}
+          {/* we can do validation of whole form or any single field by defining name of the field. */}
+          <button
+            type="button"
+            // manual validation for whole form.
+            // onClick={()=> trigger()}
+
+            // manual validation for email field.
+            onClick={()=> trigger("email")}
+            className="border bg-black font-bold text-white w-full my-2 p-2 rounded"
+          >
+            Manual Validate
+          </button>
         </form>
         <DevTool control={control} />
       </div>
@@ -468,3 +483,4 @@ const FirstForm = () => {
 };
 
 export default FirstForm;
+
