@@ -1,5 +1,6 @@
 import { useFieldArray, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
+import { useEffect } from "react";
 
 // here we create a variable, it will be updated on render
 let renderCount = 0;
@@ -14,6 +15,8 @@ type FormValues = {
   };
   phoneNumbers: string[];
   phNumbers: { number: string }[];
+  age: number;
+  dob: Date;
 };
 
 const FirstForm = () => {
@@ -33,6 +36,8 @@ const FirstForm = () => {
       },
       phoneNumbers: ["", ""],
       phNumbers: [{ number: "" }],
+      age: 0,
+      dob: new Date(),
     },
 
     // default values from previous state or from api
@@ -50,7 +55,7 @@ const FirstForm = () => {
     //   },
   });
 
-  const { register, control, handleSubmit, formState } = form;
+  const { register, control, handleSubmit, formState, watch } = form;
   const { errors } = formState;
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted:", data);
@@ -61,11 +66,43 @@ const FirstForm = () => {
     control,
   });
 
+  // here below we wil watch from values single only username, then multiple username and email, and then whole form values, but need it will render form on every change. so we can also use useEffect with
+  // we can use watch method to get the value of the input
+  const watchUserName = watch("username");
+  // here we will only watch two value username and email
+  const watchUserNameAndEmail = watch(["username", "email"]);
+  // here we will watch all values of form without specifying a field name and store it in a variable
+  const formValues = watch();
+
+  // here we will useEffect with watch method to get the value of the input and store it in a variable and these are actual subscriptions of the form values.
+  useEffect(() => {
+    const subscription = watch((value) => {
+      console.log(value);
+    });
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
+  // why we used useEffect to render form on every change?
+  // because we have used watch method to get the value of the input and store it in a variable formValues and it will render form on every change so we need to use useEffect to render form on every change and it will render form on every change.
+
   renderCount += 1;
   return (
     <>
       <div className="flex flex-col justify-center items-center p-4  space-x-4 space-y-4">
-        <h1 className="text-black font-bold ">Form ({renderCount / 2})</h1>
+        {/* Here we can display the number of times the form has been rendered */}
+        <h1 className="bg-white text-black font-bold ">
+          Form ({renderCount / 2})
+        </h1>
+        {/* Watching Username value */}
+        <h2 className="bg-white">Watching username Value: {watchUserName}</h2>
+        {/* Watching only username and email values */}
+        <h2 className="bg-white">
+          Username and Email: {watchUserNameAndEmail}
+        </h2>
+        {/* Watching Form Values */}
+        <h2 className="bg-white">
+          Watching Form Values: {JSON.stringify(formValues)}
+        </h2>
         <form
           noValidate
           //   to submit the form we use handleSubmit method assigned to the onSubmit event and passed in our submit function
@@ -178,7 +215,8 @@ const FirstForm = () => {
           </div>
 
           {/* primary phone number */}
-          <div className="flex justify-start  text-start flex-col">
+
+          {/* <div className="flex justify-start  text-start flex-col">
             <label htmlFor="">Primary Phone Number</label>
             <input
               type="text"
@@ -192,10 +230,11 @@ const FirstForm = () => {
             <p className=" text-sm text-red-500">
               {errors.phoneNumbers?.[0]?.message}
             </p>
-          </div>
+          </div> */}
 
           {/* secondary phone number */}
-          <div className="flex justify-start  text-start flex-col">
+
+          {/* <div className="flex justify-start  text-start flex-col">
             <label htmlFor="">Secondary Phone Number</label>
             <input
               type="text"
@@ -209,7 +248,8 @@ const FirstForm = () => {
             <p className=" text-sm text-red-500">
               {errors.phoneNumbers?.[1]?.message}
             </p>
-          </div>
+          </div> */}
+
           {/* Dynamic list */}
           {/* To make dynamic filed need to import useFieldArray from rect-hook-form then add new field with an array of objects as values, destructure field append and remove from useFieldArray, and built the and then call these append and remove in callback, other values also have in  useFieldArray.  */}
           <div>
@@ -223,7 +263,7 @@ const FirstForm = () => {
                   >
                     <input
                       type="number"
-                      className="border border-black rounded p-2 my-2"
+                      className="border border-black rounded p-2 w-full my-2"
                       {...register(`phNumbers.${index}.number` as const)}
                     />
                     {index > 0 && (
@@ -247,6 +287,41 @@ const FirstForm = () => {
               </button>
             </div>
           </div>
+          {/* by default number value goes in string format from browser, to send it as number need to use (valueAsNumber:true) in register object */}
+          {/* numeric fields and Date values */}
+          <div className="flex justify-start  text-start flex-col">
+            <label htmlFor="">Age</label>
+            <input
+              type="number"
+              id="age"
+              placeholder="18"
+              className="border border-black rounded p-2"
+              {...register("age", {
+                // here we make valueAsNumber true, and value will go in number type
+                valueAsNumber: true,
+                required: "Age Name Required",
+              })}
+            />
+            <p className=" text-sm text-red-500">{errors.age?.message}</p>
+          </div>
+
+          {/* Date of birth */}
+          <div className="flex justify-start  text-start flex-col">
+            <label htmlFor="">Date of birth</label>
+            <input
+              type="date"
+              id="dob"
+              placeholder="18"
+              className="border border-black rounded p-2"
+              {...register("dob", {
+                // here we make it valueAsDate true, and value will go in number type
+                valueAsDate: true,
+                required: "DOB is Required",
+              })}
+            />
+            <p className=" text-sm text-red-500">{errors.dob?.message}</p>
+          </div>
+
           {/* Button  */}
           <button
             type="submit"
