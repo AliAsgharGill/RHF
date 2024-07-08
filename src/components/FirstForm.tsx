@@ -1,4 +1,9 @@
-import { FieldError, FieldErrors, useFieldArray, useForm } from "react-hook-form";
+import {
+  FieldError,
+  FieldErrors,
+  useFieldArray,
+  useForm,
+} from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useEffect } from "react";
 
@@ -65,7 +70,7 @@ const FirstForm = () => {
     setValue,
   } = form;
   //  here we will get errors from formState and get shome info from formState, like errors, touchedFields and dirtyFields, we can use this info to show errors on screen
-  const { errors, touchedFields, dirtyFields, isDirty } = formState;
+  const { errors, touchedFields, dirtyFields, isDirty, isValid } = formState;
   // console.log(
   //   "Touched Fields:",
   //   touchedFields,
@@ -148,8 +153,6 @@ const FirstForm = () => {
           Watching Form Values: {JSON.stringify(formValues)}
         </h2>
 
-
-        
         <form
           noValidate
           //   to submit the form we use handleSubmit method assigned to the onSubmit event and passed in our submit function
@@ -377,12 +380,16 @@ const FirstForm = () => {
             <p className=" text-sm text-red-500">{errors.dob?.message}</p>
           </div>
 
-          {/* Button  */}
+          {/* Here we make it disbaled on the basis of isDirty and isValid values, and we get these values form formState */}
+          {/* Submission Button  */}
           <button
             type="submit"
-            className="border bg-black font-bold text-white w-full my-2 p-2 rounded"
+            disabled={!isDirty || !isValid}
+            className={`border ${
+              isValid ? "bg-black" : "bg-gray-300"
+            } font-bold text-white w-full my-2 p-2 rounded`}
           >
-            Submit
+            {!isValid ? "Please Fill Form" : "Submit"}
           </button>
           {/* Get values button */}
           <button
