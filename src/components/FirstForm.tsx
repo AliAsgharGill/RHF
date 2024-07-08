@@ -32,7 +32,7 @@ const FirstForm = () => {
     // static default values
 
     defaultValues: {
-      username: "",
+      username: "Ali",
       email: "",
       channel: "",
       social: {
@@ -68,6 +68,7 @@ const FirstForm = () => {
     watch,
     getValues,
     setValue,
+    reset,
   } = form;
   //  here we will get errors from formState and get shome info from formState, like errors, touchedFields and dirtyFields, we can use this info to show errors on screen
   const {
@@ -125,10 +126,17 @@ const FirstForm = () => {
       console.log(value);
     });
     return () => subscription.unsubscribe();
-  }, [watch, isSubmitSuccessful]);
-
+  }, [watch]);
+  
   // why we used useEffect to render form on every change?
   // because we have used watch method to get the value of the input and store it in a variable formValues and it will render form on every change so we need to use useEffect to render form on every change and it will render form on every change.
+
+  // here below we will use reset function on click of the reset button but with condition of isSubmitSuccessful
+  useEffect(() => {
+    if (isSubmitSuccessful) {
+      reset();
+    }
+  }, [isSubmitSuccessful, reset]);
 
   // here we are using getValues method from form, it will show values on click of the Get values button, we can a single property, multiple properties by defining in an array or whole form values without specifying a field name
   const handleGetValues = () => {
@@ -408,6 +416,17 @@ const FirstForm = () => {
             } font-bold text-white w-full my-2 p-2 rounded`}
           >
             {!isValid ? "Please Fill Form" : "Submit"}
+          </button>
+          {/* reset button */}
+          <button
+            type="button"
+            // No need to make button type reset because reset is inbuilt and will also reset default vavlues of form, button method reset will not erase default values.
+            onClick={() => reset()}
+            // disabled={!isDirty || !isValid || !isDirty || !isValid}
+            className={`border  bg-black 
+            } font-bold text-white w-full my-2 p-2 rounded`}
+          >
+            {!isValid ? "Reset" : ""}
           </button>
           {/* Get values button */}
           <button
