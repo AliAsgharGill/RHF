@@ -127,7 +127,7 @@ const FirstForm = () => {
     });
     return () => subscription.unsubscribe();
   }, [watch]);
-  
+
   // why we used useEffect to render form on every change?
   // because we have used watch method to get the value of the input and store it in a variable formValues and it will render form on every change so we need to use useEffect to render form on every change and it will render form on every change.
 
@@ -236,6 +236,14 @@ const FirstForm = () => {
                       !fieldValue.endsWith("baddomain.com") ||
                       "This domain is not supported"
                     );
+                  },
+                  emailAvailable: async (fieldValue) => {
+                    const response = await fetch(
+                      `https://jsonplaceholder.typicode.com/users/?email=${fieldValue}`
+                    );
+                    const data = await response.json();
+                    return data.length == 0 || "Email already taken";
+                    // return fieldValue !== data.email || "Email already taken";
                   },
                 },
               })}
@@ -410,17 +418,19 @@ const FirstForm = () => {
           {/* Submission Button  */}
           <button
             type="submit"
-            disabled={!isDirty || !isValid || !isDirty || !isValid}
+            // remove !isValid condition and make it disabled for now only
+            disabled={!isDirty || !isDirty}
             className={`border ${
               isValid ? "bg-black" : "bg-gray-300"
             } font-bold text-white w-full my-2 p-2 rounded`}
           >
+            {/* Submit */}
             {!isValid ? "Please Fill Form" : "Submit"}
           </button>
           {/* reset button */}
           <button
             type="button"
-            // No need to make button type reset because reset is inbuilt and will also reset default vavlues of form, button method reset will not erase default values.
+            // No need to make button type reset because reset is inbuilt and will also reset default values of form, button method reset will not erase default values.
             onClick={() => reset()}
             // disabled={!isDirty || !isValid || !isDirty || !isValid}
             className={`border  bg-black 
