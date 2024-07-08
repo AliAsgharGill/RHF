@@ -29,6 +29,12 @@ const FirstForm = () => {
 
   //   we can also load previously saved as default values but need to make defaultVales function asynchronous
   const form = useForm<FormValues>({
+    // we can check use different validation modes, mean when form get check for validation like onSubmit as it by default, onBlur, all, onChange, onTouced.
+    mode:"onTouched",
+    // onChange: mode will rerender on every change in any filed so be careful with it because it can impact performance.
+    // all mode will provide both onChange and onBlur. 
+
+
     // static default values
 
     defaultValues: {
