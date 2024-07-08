@@ -1,4 +1,4 @@
-import { useFieldArray, useForm } from "react-hook-form";
+import { FieldError, FieldErrors, useFieldArray, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 import { useEffect } from "react";
 
@@ -66,17 +66,21 @@ const FirstForm = () => {
   } = form;
   //  here we will get errors from formState and get shome info from formState, like errors, touchedFields and dirtyFields, we can use this info to show errors on screen
   const { errors, touchedFields, dirtyFields, isDirty } = formState;
-  console.log(
-    "Touched Fields:",
-    touchedFields,
-    "Dirty Fields:",
-    dirtyFields,
-    "IsDirty:",
-    isDirty
-  );
+  // console.log(
+  //   "Touched Fields:",
+  //   touchedFields,
+  //   "Dirty Fields:",
+  //   dirtyFields,
+  //   "IsDirty:",
+  //   isDirty
+  // );
 
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted:", data);
+  };
+
+  const onError = (errors: FieldErrors<FormValues>) => {
+    console.log("Form errors:", errors);
   };
 
   const { fields, append, remove } = useFieldArray({
@@ -131,7 +135,7 @@ const FirstForm = () => {
       <div className="flex flex-col justify-center items-center p-4  space-x-4 space-y-4">
         {/* Here we can display the number of times the form has been rendered */}
         <h1 className="bg-white text-black font-bold ">
-          Form ({renderCount / 2})
+          Form rendered:({renderCount / 2}) times
         </h1>
         {/* Watching Username value */}
         <h2 className="bg-white">Watching username Value: {watchUserName}</h2>
@@ -143,10 +147,14 @@ const FirstForm = () => {
         <h2 className="bg-white">
           Watching Form Values: {JSON.stringify(formValues)}
         </h2>
+
+
+        
         <form
           noValidate
           //   to submit the form we use handleSubmit method assigned to the onSubmit event and passed in our submit function
-          onSubmit={handleSubmit(onSubmit)}
+          // reason to use handleSubmit is it can accept another argument onError
+          onSubmit={handleSubmit(onSubmit, onError)}
           className=" bg-white w-full  md:w-1/2  lg:w-1/3 shadow-md p-4 rounded "
         >
           {/* username  */}
