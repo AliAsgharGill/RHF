@@ -64,7 +64,11 @@ const FirstForm = () => {
     getValues,
     setValue,
   } = form;
-  const { errors } = formState;
+  //  here we will get errors from formState and get shome info from formState, like errors, touchedFields and dirtyFields, we can use this info to show errors on screen
+  const { errors, touchedFields, dirtyFields, isDirty } = formState;
+  console.log("Touched Fields:", touchedFields, "Dirty Fields:", dirtyFields, "IsDirty:", isDirty);
+  
+
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted:", data);
   };
@@ -137,7 +141,7 @@ const FirstForm = () => {
           noValidate
           //   to submit the form we use handleSubmit method assigned to the onSubmit event and passed in our submit function
           onSubmit={handleSubmit(onSubmit)}
-          className=" bg-white w-1/3 shadow-md p-4 rounded "
+          className=" bg-white w-full  md:w-1/2  lg:w-1/3 shadow-md p-4 rounded "
         >
           {/* username  */}
           <div className="flex justify-start  text-start flex-col">
