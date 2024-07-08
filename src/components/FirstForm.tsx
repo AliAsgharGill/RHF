@@ -1,4 +1,4 @@
-import { useForm } from "react-hook-form";
+import { useFieldArray, useForm } from "react-hook-form";
 import { DevTool } from "@hookform/devtools";
 
 // here we create a variable, it will be updated on render
@@ -13,6 +13,7 @@ type FormValues = {
     facebook: string;
   };
   phoneNumbers: string[];
+  phNumbers: { number: string }[];
 };
 
 const FirstForm = () => {
@@ -31,6 +32,7 @@ const FirstForm = () => {
         facebook: "",
       },
       phoneNumbers: ["", ""],
+      phNumbers: [{ number: "" }],
     },
 
     // default values from previous state or from api
@@ -53,6 +55,11 @@ const FirstForm = () => {
   const onSubmit = (data: FormValues) => {
     console.log("Form submitted:", data);
   };
+
+  const { fields, append, remove } = useFieldArray({
+    name: "phNumbers",
+    control,
+  });
 
   renderCount += 1;
   return (
@@ -148,7 +155,7 @@ const FirstForm = () => {
                 required: "Twitter Username Required",
               })}
             />
-            <p className=" text-sm text-red-500">
+            <p className=" text-sm text-red`-500">
               {errors.social?.twitter?.message}
             </p>
           </div>
@@ -202,6 +209,43 @@ const FirstForm = () => {
             <p className=" text-sm text-red-500">
               {errors.phoneNumbers?.[1]?.message}
             </p>
+          </div>
+          {/* Dynamic list */}
+          {/* To make dynamic filed need to import useFieldArray from rect-hook-form then add new field with an array of objects as values, destructure field append and remove from useFieldArray, and built the and then call these append and remove in callback, other values also have in  useFieldArray.  */}
+          <div>
+            <label htmlFor="">List of phone numbers</label>
+            <div>
+              {fields.map((field, index) => {
+                return (
+                  <div
+                    className="form-control flex justify-between "
+                    key={field.id}
+                  >
+                    <input
+                      type="number"
+                      className="border border-black rounded p-2 my-2"
+                      {...register(`phNumbers.${index}.number` as const)}
+                    />
+                    {index > 0 && (
+                      <button
+                        type="button"
+                        className="border bg-black font-bold text-white my-2 p-2 rounded"
+                        onClick={() => remove(index)}
+                      >
+                        Remove{" "}
+                      </button>
+                    )}
+                  </div>
+                );
+              })}
+              <button
+                type="button"
+                className="border bg-black font-bold text-white w-full my-2 p-2 rounded"
+                onClick={() => append({ number: "" })}
+              >
+                Add Phone Number
+              </button>
+            </div>
           </div>
           {/* Button  */}
           <button
